@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function CreateProject() {
@@ -12,6 +13,8 @@ export default function CreateProject() {
   //   console.log(name);
   //   console.log(email);
   //   console.log(role);
+
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,6 +33,7 @@ export default function CreateProject() {
       if (res.ok) {
         const form = e.target;
         form.reset();
+        router.refresh();
       } else {
         console.log("Project creation failed");
       }

@@ -1,24 +1,40 @@
-"use client";
-
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 import LoadingAnimation from "./LoadingAnimation";
+import DeleteButton from "./DeleteButton";
 
-export default function ProjectsList() {
-  const [projects, setProjects] = useState([]);
+const getProjects = async () => {
+  try {
+    const res = await fetch("http://localhost:3000/api/projects", {
+      cache: "no-store",
+    });
 
-  useEffect(() => {
-    const fetchProjects = async () => {
-      const response = await fetch("/api/projects");
-      const data = await response.json();
-      setProjects(data);
-    };
+    if (!res.ok) {
+      throw new Error("Failed to fetch projects");
+    }
 
-    fetchProjects();
-  }, []);
+    return res.json();
+  } catch (error) {
+    console.log("Error loading projects");
+  }
+};
+
+export default async function ProjectsList() {
+  // const [projects, setProjects] = useState([]);
+
+  // useEffect(() => {
+  //   const fetchProjects = async () => {
+  //     const response = await fetch("/api/projects");
+  //     const data = await response.json();
+  //     setProjects(data);
+  //   };
+
+  //   fetchProjects();
+  // }, []);
 
   // console.log(projects);
+
+  const { projects } = await getProjects();
 
   return (
     <>
@@ -77,13 +93,14 @@ export default function ProjectsList() {
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                           {item.role}
                         </td>
-                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                        <td className="flex items-center gap-2 relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                           <Link
                             href={`/projects/${item._id}`}
-                            className="text-indigo-600 hover:text-indigo-900"
+                            className="text-indigo-600 hover:text-indigo-700"
                           >
                             View<span className="sr-only">, {item.name}</span>
                           </Link>
+                          <DeleteButton id={item._id} />
                         </td>
                       </tr>
                     ))}

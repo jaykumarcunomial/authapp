@@ -18,19 +18,25 @@ export async function POST(req) {
   }
 }
 
+// export async function GET() {
+//   try {
+//     await connectMongoDB();
+
+//     const projects = await Project.find({});
+
+//     return NextResponse.json(projects, { status: 200 });
+//   } catch (error) {
+//     return NextResponse.json(
+//       { message: "Failed to fetch projects." },
+//       { status: 500 }
+//     );
+//   }
+// }
+
 export async function GET() {
-  try {
-    await connectMongoDB();
-
-    const projects = await Project.find({});
-
-    return NextResponse.json(projects, { status: 200 });
-  } catch (error) {
-    return NextResponse.json(
-      { message: "Failed to fetch projects." },
-      { status: 500 }
-    );
-  }
+  await connectMongoDB();
+  const projects = await Project.find();
+  return NextResponse.json({ projects });
 }
 
 export async function DELETE(req) {

@@ -1,4 +1,8 @@
+"use client";
+
+import Link from "next/link";
 import { useEffect, useState } from "react";
+
 import LoadingAnimation from "./LoadingAnimation";
 
 export default function ProjectsList() {
@@ -6,7 +10,7 @@ export default function ProjectsList() {
 
   useEffect(() => {
     const fetchProjects = async () => {
-      const response = await fetch("/api/projectsList");
+      const response = await fetch("/api/projects");
       const data = await response.json();
       setProjects(data);
     };
@@ -14,7 +18,7 @@ export default function ProjectsList() {
     fetchProjects();
   }, []);
 
-  //   console.log(projects);
+  // console.log(projects);
 
   return (
     <>
@@ -74,12 +78,12 @@ export default function ProjectsList() {
                           {item.role}
                         </td>
                         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                          <a
-                            href="#"
+                          <Link
+                            href={`/projects/${item._id}`}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
-                            Edit<span className="sr-only">, {item.name}</span>
-                          </a>
+                            View<span className="sr-only">, {item.name}</span>
+                          </Link>
                         </td>
                       </tr>
                     ))}

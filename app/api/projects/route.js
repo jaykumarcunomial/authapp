@@ -17,3 +17,28 @@ export async function POST(req) {
     );
   }
 }
+
+export async function GET() {
+  try {
+    await connectMongoDB();
+
+    const projects = await Project.find({});
+
+    return NextResponse.json(projects, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Failed to fetch projects." },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(req) {
+  const id = req.nextUrl.searchParams.get("id");
+  await connectMongoDB();
+  await Project.findByIdAndDelete(id);
+  return NextResponse.json(
+    { message: "Project deleted successfully" },
+    { status: 200 }
+  );
+}
